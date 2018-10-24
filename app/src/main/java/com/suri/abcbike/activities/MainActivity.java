@@ -19,17 +19,16 @@ import android.widget.TextView;
 
 import com.suri.abcbike.R;
 
-import java.util.Date;
-
 // , OnMapReadyCallback
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected static final String TAG = MainActivity.class.getSimpleName();
 
     private SharedPreferences mPreferences;
-
+    private static ListviewAdapter adapter;
     private NavigationView navigationView;
     private View mLayout;
 
+    public static String myName;
    // private TextView UserName;
     //private TextView UserEmail;
 
@@ -46,11 +45,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //initCollapsingToolbar();
 
-        ListviewAdapter adapter=new ListviewAdapter();
+        adapter=new ListviewAdapter();
         ListView listview=(ListView)findViewById(R.id.carpool_list);
         listview.setAdapter(adapter);
-        adapter.addItem(new ListviewItem(new Date(123123),"부대","간부 아파트","정태훈",1,4));
-        adapter.addItem(new ListviewItem(new Date(123123),"간부아파트","부대","윤상운",1,4));
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.carpool_add_fab);
         final Intent carpoolIntent=new Intent(this,CarpoolMakeActivity.class);
@@ -131,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavUserName.setText(mPreferences.getString("Name","Save The Color"));
         NavUserEmail.setText(mPreferences.getString("Email","Save The Color"));
-
+        myName=NavUserName.getText().toString();
 
         /*try {
             Glide.with(this).load(R.drawable.profile_image).into((ImageView) findViewById(R.id.profile_image));
@@ -202,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
 
+
     }
 
     @Override
@@ -254,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public static void addItem(ListviewItem item){
+        MainActivity.adapter.addItem(item);
+        adapter.notifyDataSetChanged();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
